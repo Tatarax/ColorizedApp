@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  SettingViewController.swift
 //  ColorizedApp
 //
 //  Created by Dinar on 20.11.2022.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class SettingViewController: UIViewController {
 
     @IBOutlet var colorView: UIView!
     
@@ -19,21 +19,30 @@ class ViewController: UIViewController {
     @IBOutlet var sliderGreen: UISlider!
     @IBOutlet var sliderBlue: UISlider!
     
+   
+    var delegate: SettingsViewControllerDelegate!
+    
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        rangeForRed()
-        rangeForGreen()
-        rangeForBlue()
-        sutepSliderRed()
-        sutepSliderGreen()
-        sutepSliderBlue()
+        settingSliderRGB(color: .red, slider: sliderRed)
+        settingSliderRGB(color: .green, slider: sliderGreen)
+        settingSliderRGB(color: .blue, slider: sliderBlue)
+        rangeForRGB()
+        changeColorView()
     }
     
-    // Action Slider:
+    
+    @IBAction func backButton() {
+        delegate.setNewColorView(colorRedView: CGFloat(sliderRed.value), colorGreenView:CGFloat(sliderGreen.value), colorBlue: CGFloat(sliderBlue.value), alpha: CGFloat(1))
+    }
+    
+    
+    //MARK:  Action Slider
     @IBAction func sliderActionRed() {
         colorRangeForRed.text = "\(round(sliderRed.value * 100) / 100)"
         changeColorView()
+        
     }
     
     @IBAction func sliderActionGreen() {
@@ -47,47 +56,23 @@ class ViewController: UIViewController {
     }
     
     
+    //MARK: Private Metod
+    private func settingSliderRGB(color: UIColor, slider: UISlider) {
+        slider.value = 0
+        slider.minimumValue = 0
+        slider.maximumValue = 1
+        slider.thumbTintColor = .blue
+        slider.maximumTrackTintColor = .white
+        slider.minimumTrackTintColor = .red
+    }
     
-    
-    //Private Metod:
-    private func rangeForRed() {
+   
+    private func rangeForRGB() {
         colorRangeForRed.text = String(sliderRed.value)
-    }
-    
-    private func rangeForGreen() {
         colorRangeForGreen.text = String(sliderGreen.value)
-    }
-    
-    private func rangeForBlue() {
         colorRangeForBlue.text = String(sliderBlue.value)
     }
     
-    private func sutepSliderRed() {
-        sliderRed.value = 0
-        sliderRed.minimumValue = 0
-        sliderRed.maximumValue = 1
-        sliderRed.thumbTintColor = .blue
-        sliderRed.maximumTrackTintColor = .white
-        sliderRed.minimumTrackTintColor = .red
-    }
-    
-    private func sutepSliderGreen() {
-        sliderGreen.value = 0
-        sliderGreen.minimumValue = 0
-        sliderGreen.maximumValue = 1
-        sliderGreen.thumbTintColor = .blue
-        sliderGreen.maximumTrackTintColor = .white
-        sliderGreen.minimumTrackTintColor = .green
-    }
-    
-    private func sutepSliderBlue() {
-        sliderBlue.value = 0
-        sliderBlue.minimumValue = 0
-        sliderBlue.maximumValue = 1
-        sliderBlue.thumbTintColor = .blue
-        sliderBlue.maximumTrackTintColor = .white
-        sliderBlue.minimumTrackTintColor = .blue
-    }
     
     private func changeColorView() {
         colorView.backgroundColor = UIColor(
